@@ -22,6 +22,8 @@ body{
   font-size:16px;
   line-height:24px; 
   background-color:#202020;
+  overflow-x: hidden;
+
 }
 .container{
   width: 1170px;
@@ -426,6 +428,15 @@ profile-photo .img{
 }
 
 
+#msg {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+}
+
+#msg.error {
+    color: red;
+}
 
 
 
