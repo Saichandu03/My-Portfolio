@@ -65,22 +65,22 @@ $(document).ready(function() {
     });
 
   //contact form to excel sheet
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbzUSaaX3XmlE5m9YLOHOBrRuCh2Ohv49N9bs4bew7xPd1qlgpvXtnudDs5Xhp3jF-Fx/exec';
-  const form = document.forms['submitToGoogleSheet']
-  const msg = document.getElementById("msg")
+  // const scriptURL = 'https://script.google.com/macros/s/AKfycbzUSaaX3XmlE5m9YLOHOBrRuCh2Ohv49N9bs4bew7xPd1qlgpvXtnudDs5Xhp3jF-Fx/exec';
+  // const form = document.forms['submitToGoogleSheet']
+  // const msg = document.getElementById("msg")
 
-  form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-          .then(response => {
-              msg.innerHTML = "Message sent successfully"
-              setTimeout(function () {
-                  msg.innerHTML = ""
-              }, 5000)
-              form.reset()
-          })
-          .catch(error => console.error('Error!', error.message))
-  })
+  // form.addEventListener('submit', e => {
+  //     e.preventDefault()
+  //     fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+  //         .then(response => {
+  //             msg.innerHTML = "Message sent successfully"
+  //             setTimeout(function () {
+  //                 msg.innerHTML = ""
+  //             }, 5000)
+  //             form.reset()
+  //         })
+  //         .catch(error => console.error('Error!', error.message))
+  // })
     
   });
   
@@ -109,6 +109,58 @@ $(document).ready(function() {
       }
     });
   }
-  
+
+
+
+emailjs.init("ZLaxZZCxAPhJXlu2-");
+
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const form = event.target;
+
+  // Collect form data
+  const templateParams = {
+      from_name: form.NAME.value,
+      from_email: form.EMAIL.value,
+      subject: form.SUBJECT.value || "No Subject",
+      message: form.MESSAGE.value
+  };
+
+  // Send Email to Admin
+  emailjs.send("service_g1cx9to", "template_ikmochs", templateParams)
+  .then(function(response) {
+      console.log('Admin Email Sent:', response);
+
+      // Send Auto-Reply to User
+      return emailjs.send("service_g1cx9to", "template_g97luco", templateParams);
+  })
+  .then(function(response) {
+      console.log('Auto-Reply Sent:', response);
+
+      // Show success toast
+      Toastify({
+          text: "Message sent successfully! Check your inbox for a confirmation email.",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "green",
+      }).showToast();
+
+      form.reset();
+  })
+  .catch(function(error) {
+      console.log('Error:', error);
+      
+      // Show error toast
+      Toastify({
+          text: "Failed to send message. Please try again.",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "red",
+      }).showToast();
+  });
+});
 
  
