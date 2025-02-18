@@ -136,11 +136,9 @@ document.getElementById('contact-form').addEventListener('submit', function(even
       return emailjs.send("service_g1cx9to", "template_g97luco", templateParams);
   })
   .then(function(response) {
-      console.log('Auto-Reply Sent:', response);
-
       // Show success toast
       Toastify({
-          text: "Message sent successfully! Check your inbox for a confirmation email.",
+          text: "Mail sent successfully! Check your confirmation mail.",
           duration: 3000,
           gravity: "top",
           position: "right",
